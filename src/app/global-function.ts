@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { WEBVIEW_ACTION } from "../../constants/constants";
+import { WEBVIEW_ACTION } from "./constants/constants";
 import { sendMessageToIframe } from "./utils/iframe-utils";
 
 (function() {

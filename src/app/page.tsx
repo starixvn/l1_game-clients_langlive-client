@@ -2,8 +2,11 @@
 import { useState, useEffect } from "react";
 import configs from "../../configs";
 import { generateGameUrl } from "./url-utils";
-import { sendMessageToIframe } from "./utils/iframe-utils";
-import { WEBVIEW_ACTION } from "../../constants/constants";
+import {
+  sendMessageToIframe,
+  listenMessageFromIframe,
+} from "./utils/iframe-utils";
+import { WEBVIEW_ACTION } from "./constants/constants";
 import "./global-function";
 
 const resolution = {
@@ -36,17 +39,38 @@ export default function Home() {
   // Handle click outside iframe
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const iframe = document.querySelector('iframe');
+      const iframe = document.querySelector("iframe");
       if (iframe && !iframe.contains(event.target as Node)) {
         sendMessageToIframe(WEBVIEW_ACTION.CLOSE);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    
+    document.addEventListener("click", handleClickOutside);
+
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
+  }, []);
+
+  // Listen for messages from iframe
+  useEffect(() => {
+    const cleanup = listenMessageFromIframe((action, payload) => {
+      switch (action) {
+        case WEBVIEW_ACTION.ON_GAME_LOADED:
+          console.log("Game is ready");
+          break;
+        case WEBVIEW_ACTION.CLOSE:
+          console.log("Game closed by user");
+          break;
+        case WEBVIEW_ACTION.OPEN_RECHARGE_PANEL:
+          console.log("Open recharge panel");
+          break;
+        default:
+          break;
+      }
+    });
+
+    return cleanup;
   }, []);
 
   return (
