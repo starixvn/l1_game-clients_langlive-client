@@ -26,6 +26,7 @@ export default function Home() {
         params
       );
       setUrl(newUrl);
+      window.history.replaceState({}, "", window.location.pathname);
     }
   }, []);
 
@@ -44,6 +45,7 @@ export default function Home() {
               width: `100%`,
               height: "auto",
               aspectRatio: `${resolution.width} / ${resolution.height}`,
+              maxHeight: "75vh",
             }}
             allow="*"
             allowFullScreen

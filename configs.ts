@@ -2,7 +2,7 @@ import configJson from "./configs.json";
 
 const configs = {
   env: configJson.env || "DEV",
-  subDomain: configJson.subDomain || "l2-proxy1",
+  subDomain: configJson.subDomain || "",
   subPath: configJson.subPath || "",
   port: configJson.port || 3000,
 };
