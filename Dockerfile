@@ -18,7 +18,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json yarn.lock tsconfig.json configs.ts configs.json next.config.ts tailwind.config.ts postcss.config.mjs ./
 COPY configs ./configs
-COPY public ./public
 COPY src ./src
 
 RUN yarn build
