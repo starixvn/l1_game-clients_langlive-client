@@ -31,7 +31,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="relative w-full h-screen">
+    <main className="relative w-full h-screen max-w-3xl mx-auto">
       <div className="absolute left-0 right-0 bottom-0">
         {url && (
           <iframe
@@ -45,7 +45,6 @@ export default function Home() {
               width: `100%`,
               height: "auto",
               aspectRatio: `${resolution.width} / ${resolution.height}`,
-              maxHeight: "75vh",
             }}
             allow="*"
             allowFullScreen
