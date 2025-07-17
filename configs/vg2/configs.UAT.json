@@ -1,0 +1,6 @@
+{
+  "env": "UAT",
+  "port": 5000,
+  "subDomain": "l1uatclient",
+  "subPath": "/uat"
+}
