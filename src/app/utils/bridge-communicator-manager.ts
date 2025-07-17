@@ -21,7 +21,7 @@ class BridgeCommunicatorManager {
     private static logError(message: string, error?: any): void {
         const errorMessage = error ? `${message} ${error}` : message;
         // TODO: Add sentry logger
-        console.error(errorMessage);
+        console.log(errorMessage);
     }
 
     private static tryReactNativeWebView(method: string, payload: any): boolean {
@@ -105,7 +105,7 @@ class BridgeCommunicatorManager {
 
         const globalFunctionCalled = this.callGlobalFunction(method);
         if (!globalFunctionCalled) {
-            console.error(`notifyNativeApp: no valid bridge found for "${method}"`);
+            console.log(`notifyNativeApp: no valid bridge found for "${method}"`);
         }
     }
 }
