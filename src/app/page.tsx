@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import configs from "../../configs";
 import { generateGameUrl } from "./url-utils";
+import { sendMessageToIframe } from "./utils/iframe-utils";
+import { WEBVIEW_ACTION } from "../../constants/constants";
+import "./global-function";
 
 const resolution = {
   width: 786,
@@ -28,6 +31,22 @@ export default function Home() {
       setUrl(newUrl);
       window.history.replaceState({}, "", window.location.pathname);
     }
+  }, []);
+
+  // Handle click outside iframe
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const iframe = document.querySelector('iframe');
+      if (iframe && !iframe.contains(event.target as Node)) {
+        sendMessageToIframe(WEBVIEW_ACTION.CLOSE);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
   }, []);
 
   return (
