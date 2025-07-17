@@ -8,6 +8,7 @@ import {
 } from "./utils/iframe-utils";
 import { WEBVIEW_ACTION } from "./constants/constants";
 import "./global-function";
+import BridgeCommunicatorManager from "./utils/bridge-communicator-manager";
 
 const resolution = {
   width: 786,
@@ -40,8 +41,13 @@ export default function Home() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const iframe = document.querySelector("iframe");
-      if (iframe && !iframe.contains(event.target as Node)) {
-        sendMessageToIframe(WEBVIEW_ACTION.CLOSE);
+      const target = event.target as Node;
+      
+      if (iframe && target && !iframe.contains(target)) {
+        const isClickOnIframe = iframe === target || iframe.contains(target);
+        if (!isClickOnIframe) {
+          sendMessageToIframe(WEBVIEW_ACTION.CLOSE);
+        }
       }
     };
 
@@ -57,13 +63,16 @@ export default function Home() {
     const cleanup = listenMessageFromIframe((action, payload) => {
       switch (action) {
         case WEBVIEW_ACTION.ON_GAME_LOADED:
-          console.log("Game is ready");
+          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.ON_GAME_LOADED);
           break;
         case WEBVIEW_ACTION.CLOSE:
-          console.log("Game closed by user");
+          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.CLOSE);
           break;
         case WEBVIEW_ACTION.OPEN_RECHARGE_PANEL:
-          console.log("Open recharge panel");
+          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.OPEN_RECHARGE_PANEL);
+          break;
+        case WEBVIEW_ACTION.ON_RECHARGE_SUCCESS:
+          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.ON_RECHARGE_SUCCESS);
           break;
         default:
           break;
