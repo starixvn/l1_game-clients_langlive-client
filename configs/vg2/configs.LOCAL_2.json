@@ -1,0 +1,6 @@
+{
+  "env": "LOCAL2",
+  "port": 5000,
+  "subDomain": "l2-proxy2",
+  "subPath": ""
+}

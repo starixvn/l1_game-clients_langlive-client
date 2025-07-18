@@ -1,0 +1,6 @@
+{
+  "env": "PROD",
+  "port": 5000,
+  "subDomain": "client",
+  "subPath": ""
+}
