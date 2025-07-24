@@ -12,7 +12,7 @@ import BridgeCommunicatorManager from "./utils/bridge-communicator-manager";
 
 const resolution = {
   width: 786,
-  height: 772,
+  height: 828,
 };
 
 export default function Home() {
@@ -42,7 +42,7 @@ export default function Home() {
     const handleClickOutside = (event: MouseEvent) => {
       const iframe = document.querySelector("iframe");
       const target = event.target as Node;
-      
+
       if (iframe && target && !iframe.contains(target)) {
         const isClickOnIframe = iframe === target || iframe.contains(target);
         if (!isClickOnIframe) {
@@ -63,16 +63,22 @@ export default function Home() {
     const cleanup = listenMessageFromIframe((action, payload) => {
       switch (action) {
         case WEBVIEW_ACTION.ON_GAME_LOADED:
-          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.ON_GAME_LOADED);
+          BridgeCommunicatorManager.notifyNativeApp(
+            WEBVIEW_ACTION.ON_GAME_LOADED
+          );
           break;
         case WEBVIEW_ACTION.CLOSE:
           BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.CLOSE);
           break;
         case WEBVIEW_ACTION.OPEN_RECHARGE_PANEL:
-          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.OPEN_RECHARGE_PANEL);
+          BridgeCommunicatorManager.notifyNativeApp(
+            WEBVIEW_ACTION.OPEN_RECHARGE_PANEL
+          );
           break;
         case WEBVIEW_ACTION.ON_RECHARGE_SUCCESS:
-          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.ON_RECHARGE_SUCCESS);
+          BridgeCommunicatorManager.notifyNativeApp(
+            WEBVIEW_ACTION.ON_RECHARGE_SUCCESS
+          );
           break;
         default:
           break;
