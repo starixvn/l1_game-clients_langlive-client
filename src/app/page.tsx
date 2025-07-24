@@ -17,17 +17,8 @@ const resolution = {
 
 export default function Home() {
   const [url, setUrl] = useState("");
-  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
-    // Detect iOS device
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isIOSDevice = Boolean(
-      /iphone|ipad|ipod/.test(userAgent) ||
-        /iPad|iPhone|iPod/.test(navigator.userAgent)
-    );
-    setIsIOS(isIOSDevice);
-
     const params = new URLSearchParams(window.location.search);
     const gameIdFromQuery =
       params.get("gameId") || localStorage.getItem("llGameId") || "";
@@ -51,7 +42,7 @@ export default function Home() {
     const handleClickOutside = (event: MouseEvent) => {
       const iframe = document.querySelector("iframe");
       const target = event.target as Node;
-
+      
       if (iframe && target && !iframe.contains(target)) {
         const isClickOnIframe = iframe === target || iframe.contains(target);
         if (!isClickOnIframe) {
@@ -69,25 +60,19 @@ export default function Home() {
 
   // Listen for messages from iframe
   useEffect(() => {
-    const cleanup = listenMessageFromIframe((action) => {
+    const cleanup = listenMessageFromIframe((action, payload) => {
       switch (action) {
         case WEBVIEW_ACTION.ON_GAME_LOADED:
-          BridgeCommunicatorManager.notifyNativeApp(
-            WEBVIEW_ACTION.ON_GAME_LOADED
-          );
+          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.ON_GAME_LOADED);
           break;
         case WEBVIEW_ACTION.CLOSE:
           BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.CLOSE);
           break;
         case WEBVIEW_ACTION.OPEN_RECHARGE_PANEL:
-          BridgeCommunicatorManager.notifyNativeApp(
-            WEBVIEW_ACTION.OPEN_RECHARGE_PANEL
-          );
+          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.OPEN_RECHARGE_PANEL);
           break;
         case WEBVIEW_ACTION.ON_RECHARGE_SUCCESS:
-          BridgeCommunicatorManager.notifyNativeApp(
-            WEBVIEW_ACTION.ON_RECHARGE_SUCCESS
-          );
+          BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.ON_RECHARGE_SUCCESS);
           break;
         default:
           break;
@@ -98,14 +83,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main
-      className={`relative w-full h-dvh max-w-3xl mx-auto gradient-background`}
-    >
-      <div
-        className={`absolute left-0 right-0  ${
-          isIOS ? "bottom-[34px]" : "bottom-0"
-        }`}
-      >
+    <main className="relative w-full h-dvh max-w-3xl mx-auto">
+      <div className="absolute left-0 right-0 bottom-0">
         {url && (
           <iframe
             src={url}
