@@ -15,7 +15,7 @@ const resolution = {
   height: 828,
 };
 
-export default function Home() {
+export default function Page() {
   const [url, setUrl] = useState("");
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function Home() {
 
   // Listen for messages from iframe
   useEffect(() => {
-    const cleanup = listenMessageFromIframe((action, payload) => {
+    return listenMessageFromIframe((action, payload) => {
       switch (action) {
         case WEBVIEW_ACTION.ON_GAME_LOADED:
           BridgeCommunicatorManager.notifyNativeApp(
@@ -84,8 +84,6 @@ export default function Home() {
           break;
       }
     });
-
-    return cleanup;
   }, []);
 
   return (
