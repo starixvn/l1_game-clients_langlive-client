@@ -9,6 +9,7 @@ import {
 import { WEBVIEW_ACTION } from "./constants/constants";
 import "./global-function";
 import BridgeCommunicatorManager from "./utils/bridge-communicator-manager";
+import { ExitPopup } from "./components/exit-popup";
 
 const resolution = {
   width: 786,
@@ -17,6 +18,7 @@ const resolution = {
 
 export default function Page() {
   const [url, setUrl] = useState("");
+  const [showExitPopup, setShowExitPopup] = useState(false);
   // Track a pending close fallback timer id
   const closeFallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Track if close dialog is already shown in game (to prevent multiple close attempts)
@@ -50,19 +52,8 @@ export default function Page() {
       if (iframe && target && !iframe.contains(target)) {
         const isClickOnIframe = iframe === target || iframe.contains(target);
         if (!isClickOnIframe) {
-          // Only send CLOSE if close dialog is not already shown
-          // Send CLOSE to iframe
-          sendMessageToIframe(WEBVIEW_ACTION.CLOSE);
-          if (closeFallbackTimerRef.current !== null) {
-            globalThis.clearTimeout(closeFallbackTimerRef.current);
-          }
-          if (!isCloseDialogShownRef.current) {
-            // Set a 500ms fallback: if RECEIVED_CLOSE_EVENT isn't received, notify native CLOSE
-            closeFallbackTimerRef.current = globalThis.setTimeout(() => {
-              BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.CLOSE);
-              closeFallbackTimerRef.current = null;
-            }, 500);
-          }
+          // Show exit popup instead of directly closing
+          setShowExitPopup(true);
         }
       }
     };
@@ -73,6 +64,30 @@ export default function Page() {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  // Handle exit popup actions
+  const handleExitConfirm = () => {
+    // Send CLOSE to iframe
+    sendMessageToIframe(WEBVIEW_ACTION.CLOSE);
+    if (closeFallbackTimerRef.current !== null) {
+      globalThis.clearTimeout(closeFallbackTimerRef.current);
+    }
+    if (!isCloseDialogShownRef.current) {
+      // Set a 500ms fallback: if RECEIVED_CLOSE_EVENT isn't received, notify native CLOSE
+      closeFallbackTimerRef.current = globalThis.setTimeout(() => {
+        BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.CLOSE);
+        closeFallbackTimerRef.current = null;
+      }, 500);
+    }
+  };
+
+  const handleExitCancel = () => {
+    // User cancelled, do nothing
+  };
+
+  const handleExitClose = () => {
+    setShowExitPopup(false);
+  };
 
   // Listen for messages from iframe
   useEffect(() => {
@@ -140,6 +155,17 @@ export default function Page() {
             allowFullScreen
           />
         )}
+        
+        <ExitPopup
+          isOpen={showExitPopup}
+          onClose={handleExitClose}
+          onConfirm={handleExitConfirm}
+          onCancel={handleExitCancel}
+          title="提示"
+          message="是否要離開遊戲？"
+          confirmText="確定"
+          cancelText="取消"
+        />
       </div>
     </main>
   );
