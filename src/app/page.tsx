@@ -64,7 +64,9 @@ export default function Page() {
       const target = event.target as Node;
 
       // Don't show popup if it's already open
-      if (showExitPopup) return;
+      if (showExitPopup) {
+        return;
+      }
 
       if (iframe && target && !iframe.contains(target)) {
         const isClickOnIframe = iframe === target || iframe.contains(target);
