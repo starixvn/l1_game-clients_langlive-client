@@ -21,7 +21,9 @@ export default function Page() {
   const [showExitPopup, setShowExitPopup] = useState(false);
   const [language, setLanguage] = useState("zh-TW");
   // Track a pending close fallback timer id
-  const closeFallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeFallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
   // Track if close dialog is already shown in game (to prevent multiple close attempts)
   const isCloseDialogShownRef = useRef<boolean>(false);
 
@@ -29,16 +31,17 @@ export default function Page() {
     const params = new URLSearchParams(globalThis.location.search);
     const gameIdFromQuery =
       params.get("gameId") || globalThis.localStorage.getItem("llGameId") || "";
-    
+
     // Extract language information from URL parameters
-    const extractedLanguage = params.get("lang") || params.get("language") || "zh-TW";
+    const extractedLanguage =
+      params.get("lang") || params.get("language") || "zh-TW";
     const locale = params.get("locale") || extractedLanguage;
-    
+
     console.log("Language extracted:", { language: extractedLanguage, locale });
-    
+
     // Set language state
     setLanguage(extractedLanguage);
-    
+
     if (gameIdFromQuery) {
       globalThis.localStorage.setItem("llGameId", gameIdFromQuery);
       params.append("lurl", globalThis.location.origin);
@@ -67,7 +70,7 @@ export default function Page() {
         const isClickOnIframe = iframe === target || iframe.contains(target);
         if (!isClickOnIframe) {
           // Show exit popup instead of directly closing
-          setShowExitPopup(true);
+          handleShowExitPopup();
         }
       }
     };
@@ -79,8 +82,7 @@ export default function Page() {
     };
   }, [showExitPopup]);
 
-  // Handle exit popup actions
-  const handleExitConfirm = () => {
+  const handleShowExitPopup = () => {
     // Send CLOSE to iframe
     sendMessageToIframe(WEBVIEW_ACTION.CLOSE);
     if (closeFallbackTimerRef.current !== null) {
@@ -89,10 +91,16 @@ export default function Page() {
     if (!isCloseDialogShownRef.current) {
       // Set a 500ms fallback: if RECEIVED_CLOSE_EVENT isn't received, notify native CLOSE
       closeFallbackTimerRef.current = globalThis.setTimeout(() => {
-        BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.CLOSE);
-        closeFallbackTimerRef.current = null;
+        setShowExitPopup(true);
       }, 500);
     }
+  };
+
+  // Handle exit popup actions
+  const handleExitConfirm = () => {
+    BridgeCommunicatorManager.notifyNativeApp(WEBVIEW_ACTION.CLOSE);
+    closeFallbackTimerRef.current = null;
+    console.log("Send close to native app");
   };
 
   const handleExitCancel = () => {
@@ -169,7 +177,7 @@ export default function Page() {
             allowFullScreen
           />
         )}
-        
+
         <ExitPopup
           isOpen={showExitPopup}
           onClose={handleExitClose}
