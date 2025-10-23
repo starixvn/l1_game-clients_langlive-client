@@ -54,7 +54,7 @@
     display: flex;
     justify-content: center;
     gap: 20px;
-    padding: 0 30px 30px 30px;
+    padding: 0 45px 30px 30px;
 }
 
 /* Styling for the glossy buttons */
@@ -68,28 +68,21 @@
     
     /* Use the button image as background */
     background-image: url('/images/button-confirm.png');
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    border: none; /* Remove border since it's in the image */
-    border-radius: 50px; /* Pill shape */
-    
-    transition: all 0.15s ease-out;
-    user-select: none; /* Prevents text selection on click */
+    border: none;
+    border-radius: 50px;
+    user-select: none;
 }
 
 .popup-button:hover {
     /* Keep the button image but add hover effects */
-    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3),
-                inset 0 2px 3px rgba(255, 255, 255, 0.9),
-                0 1px 0 rgba(255, 255, 255, 0.4);
     transform: translateY(-1px); /* Slight lift effect */
 }
 
 .popup-button:active {
     /* Pressed-in effect */
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3), 
-                inset 0 2px 4px rgba(0, 0, 0, 0.2);
     transform: translateY(1px);
 }
 

@@ -19,6 +19,7 @@ const resolution = {
 export default function Page() {
   const [url, setUrl] = useState("");
   const [showExitPopup, setShowExitPopup] = useState(false);
+  const [language, setLanguage] = useState("zh-TW");
   // Track a pending close fallback timer id
   const closeFallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Track if close dialog is already shown in game (to prevent multiple close attempts)
@@ -28,6 +29,16 @@ export default function Page() {
     const params = new URLSearchParams(globalThis.location.search);
     const gameIdFromQuery =
       params.get("gameId") || globalThis.localStorage.getItem("llGameId") || "";
+    
+    // Extract language information from URL parameters
+    const extractedLanguage = params.get("lang") || params.get("language") || "zh-TW";
+    const locale = params.get("locale") || extractedLanguage;
+    
+    console.log("Language extracted:", { language: extractedLanguage, locale });
+    
+    // Set language state
+    setLanguage(extractedLanguage);
+    
     if (gameIdFromQuery) {
       globalThis.localStorage.setItem("llGameId", gameIdFromQuery);
       params.append("lurl", globalThis.location.origin);
@@ -49,6 +60,9 @@ export default function Page() {
       const iframe = document.querySelector("iframe");
       const target = event.target as Node;
 
+      // Don't show popup if it's already open
+      if (showExitPopup) return;
+
       if (iframe && target && !iframe.contains(target)) {
         const isClickOnIframe = iframe === target || iframe.contains(target);
         if (!isClickOnIframe) {
@@ -63,7 +77,7 @@ export default function Page() {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [showExitPopup]);
 
   // Handle exit popup actions
   const handleExitConfirm = () => {
@@ -161,10 +175,7 @@ export default function Page() {
           onClose={handleExitClose}
           onConfirm={handleExitConfirm}
           onCancel={handleExitCancel}
-          title="提示"
-          message="是否要離開遊戲？"
-          confirmText="確定"
-          cancelText="取消"
+          language={language}
         />
       </div>
     </main>

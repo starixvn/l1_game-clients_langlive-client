@@ -2,12 +2,14 @@
 
 import React from 'react';
 import './exit-popup.css';
+import { getExitPopupTranslations } from '../../_shared';
 
 export interface ExitPopupProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
     onCancel: () => void;
+    language?: string;
     title?: string;
     message?: string;
     confirmText?: string;
@@ -19,11 +21,20 @@ const ExitPopup: React.FC<ExitPopupProps> = ({
     onClose,
     onConfirm,
     onCancel,
-    title = '提示',
-    message = '是否要離開遊戲？',
-    confirmText = '確定',
-    cancelText = '取消'
+    language = 'zh-TW',
+    title,
+    message,
+    confirmText,
+    cancelText
 }) => {
+    // Get translations based on language
+    const translations = getExitPopupTranslations(language);
+    
+    // Use provided text or fallback to translations
+    const finalTitle = title || translations.title;
+    const finalMessage = message || translations.message;
+    const finalConfirmText = confirmText || translations.confirmText;
+    const finalCancelText = cancelText || translations.cancelText;
     if (!isOpen) return null;
 
     const handleConfirm = () => {
@@ -46,23 +57,23 @@ const ExitPopup: React.FC<ExitPopupProps> = ({
         <div className="popup-container" onClick={handleOverlayClick}>
             <div className="popup">
                 <div className="popup-header">
-                    {title}
+                    {finalTitle}
                 </div>
                 <div className="popup-body">
-                    <p>{message}</p>
+                    <p>{finalMessage}</p>
                 </div>
                 <div className="popup-footer">
                     <button 
                         className="popup-button btn-cancel" 
                         onClick={handleCancel}
                     >
-                        {cancelText}
+                        {finalCancelText}
                     </button>
                     <button 
                         className="popup-button btn-confirm" 
                         onClick={handleConfirm}
                     >
-                        {confirmText}
+                        {finalConfirmText}
                     </button>
                 </div>
             </div>
