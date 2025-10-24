@@ -8,20 +8,20 @@ export interface ExitPopupTranslations {
 export const exitPopupTranslations: Record<string, ExitPopupTranslations> = {
     'vi-VN': {
         title: 'Thông báo',
-        message: 'Bạn có muốn thoát khỏi trò chơi?',
+        message: 'Bạn có muốn thoát game không?',
         confirmText: 'Xác nhận',
         cancelText: 'Hủy'
     },
     'en-US': {
-        title: 'Notice',
-        message: 'Do you want to exit the game?',
+        title: 'Alert',
+        message: 'Do you want to leave the game?',
         confirmText: 'Confirm',
         cancelText: 'Cancel'
     },
     'zh-CN': {
         title: '提示',
-        message: '是否要退出游戏？',
-        confirmText: '确定',
+        message: '您要离开游戏吗？',
+        confirmText: '确认',
         cancelText: '取消'
     },
     'zh-TW': {
@@ -29,6 +29,18 @@ export const exitPopupTranslations: Record<string, ExitPopupTranslations> = {
         message: '是否要離開遊戲？',
         confirmText: '確定',
         cancelText: '取消'
+    },
+    'th-TH': {
+        title: 'แจ้งเตือน',
+        message: 'คุณต้องการออกจากเกมหรือไม่?',
+        confirmText: 'ยืนยัน',
+        cancelText: 'ยกเลิก'
+    },
+    'id-ID': {
+        title: 'Peringatan',
+        message: 'Apakah Anda ingin keluar dari permainan?',
+        confirmText: 'Konfirmasi',
+        cancelText: 'Batal'
     }
 };
 
