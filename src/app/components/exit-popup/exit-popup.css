@@ -24,7 +24,7 @@
     border-radius: 12px;
     overflow: hidden; /* Keeps the header inside the rounded corners */
     color: white;
-    height: 312px;
+    height: 275px;
     
     /* Added for a subtle pop-in animation */
     animation: fadeIn 0.3s ease-out;
@@ -34,18 +34,18 @@
 .popup-header {
     padding: 15px 20px;
     text-align: center;
-    font-size: 22px;
-    font-weight: bold;
+    font-size: 25px;
     color: white;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-    background: transparent; /* Let the popup background show through */
+    background: transparent; 
+    text-transform: uppercase;
 }
 
 /* Main content/message area */
 .popup-body {
     padding: 40px 30px;
     text-align: center;
-    font-size: 20px;
+    font-size: 17px;
     color: #f0f0f0;
 }
 
@@ -53,18 +53,20 @@
 .popup-footer {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    padding: 0 45px 30px 30px;
+    align-items: center;
+    padding: 0px 30px 0px 30px; 
 }
 
 /* Styling for the glossy buttons */
 .popup-button {
-    flex-grow: 1; /* Make buttons share space */
-    padding: 14px 24px;
-    font-size: 18px;
-    font-weight: bold;
+    width: 200px;
+    max-width: 200px;
+    padding: 10px 20px;
+    height: 50px;
+    font-size: 17px;
     color: #333;
     cursor: pointer;
+    margin: 0px 15px 0px 15px;
     
     /* Use the button image as background */
     background-image: url('/images/button-confirm.png');
@@ -74,6 +76,10 @@
     border: none;
     border-radius: 50px;
     user-select: none;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .popup-button:hover {
