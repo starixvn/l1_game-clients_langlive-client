@@ -34,10 +34,16 @@ export default function Page() {
 
     // Extract language information from URL parameters
     const extractedLanguage =
-      params.get("lang") || params.get("language") || "zh-TW";
+      params.get("lang") ||
+      params.get("language") ||
+      globalThis.localStorage.getItem("llLanguage") ||
+      "zh-TW";
     const locale = params.get("locale") || extractedLanguage;
 
     console.log("Language extracted:", { language: extractedLanguage, locale });
+
+    // Store language in localStorage for persistence across reloads
+    globalThis.localStorage.setItem("llLanguage", extractedLanguage);
 
     // Set language state
     setLanguage(extractedLanguage);
