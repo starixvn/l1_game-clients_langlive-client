@@ -13,7 +13,7 @@ import { ExitPopup } from "./components/exit-popup";
 
 const resolution = {
   width: 786,
-  height: 828,
+  height: 1038,
 };
 
 export default function Page() {
@@ -172,13 +172,11 @@ export default function Page() {
           <iframe
             src={url}
             title="Game Demo"
-            className="w-full h-full"
+            className="w-full h-full lg:w-auto lg:h-screen lg:mx-auto"
             style={{
               background: "transparent",
               backdropFilter: "none",
               overflow: "hidden",
-              width: `100%`,
-              height: "auto",
               aspectRatio: `${resolution.width} / ${resolution.height}`,
             }}
             allow="*"
